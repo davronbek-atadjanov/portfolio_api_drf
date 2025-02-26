@@ -1,30 +1,53 @@
-version: '3.8'
 
 services:
-  web:
-    build: .
-    command: ["gunicorn", "myproject.wsgi:application", "--bind", "0.0.0.0:8000"]
+  db:
+    image: postgres:15
+    ports:
+      - "5433:5432"
     volumes:
-      - .:/code
-    expose:
-      - "8000"
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ".env"
+    networks:
+      - app_network
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portfolio_api_drf_web
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
     depends_on:
       - db
+    env_file:
+      - ".env"
+
+    networks:
+      - app_network
 
   nginx:
-    image: nginx:alpine
-    volumes:
-      - .:/code
-      - ./nginx.conf:/etc/nginx/nginx.conf
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.nginx
+    container_name: django_practise_nginx
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+#      - ./certs:/etc/nginx/ssl
     depends_on:
       - web
+    networks:
+      - app_network
 
-  db:
-    image: nouchka/sqlite3:latest
-    volumes:
-      - sqlite_data:/data
+networks:
+  app_network:
+    driver: bridge
+
 
 volumes:
-  sqlite_data:
+  postgres_data:

@@ -1,25 +1,18 @@
-# Asosiy Python imajasi
-FROM python:3.10
+FROM python:3.9-slim
 
-# Pythonni ba'zi optimallashtirishlar bilan sozlash
-ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
-# Ishlash papkasi
-WORKDIR /code
+WORKDIR /app
 
-# requirements.txt-ni konteynerga nusxalash va kutubxonalarni o'rnatish
-COPY requirements.txt /code/
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt .
 
-# Loyiha fayllarini konteynerga nusxalash
-COPY . /code/
+RUN pip install --upgrade pip
 
-# Statik fayllarni to'plang (agar kerak bo'lsa)
-RUN python manage.py collectstatic --noinput --clear
+RUN pip install -r requirements.txt
 
-# Django uchun portni ochish
+COPY . .
+
 EXPOSE 8000
 
-# Gunicorn orqali Django ilovasini ishga tushirish
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
