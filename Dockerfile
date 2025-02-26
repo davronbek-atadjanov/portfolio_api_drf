@@ -1,5 +1,5 @@
 # Asosiy Python imajasi
-FROM python:3.9-slim
+FROM python:3.10
 
 # Pythonni ba'zi optimallashtirishlar bilan sozlash
 ENV PYTHONDONTWRITEBYTECODE=1
