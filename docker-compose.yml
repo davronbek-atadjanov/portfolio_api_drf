@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: ["gunicorn", "myproject.wsgi:application", "--bind", "0.0.0.0:8000"]
+    volumes:
+      - .:/code
+    expose:
+      - "8000"
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - .:/code
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+
+  db:
+    image: nouchka/sqlite3:latest
+    volumes:
+      - sqlite_data:/data
+
+volumes:
+  sqlite_data:
