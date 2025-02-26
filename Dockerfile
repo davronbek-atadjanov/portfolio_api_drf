@@ -2,8 +2,8 @@
 FROM python:3.9
 
 # Pythonni ba'zi optimallashtirishlar bilan sozlash
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Ishlash papkasi
 WORKDIR /code
