@@ -22,4 +22,4 @@ RUN python manage.py collectstatic --noinput --clear
 EXPOSE 8000
 
 # Gunicorn orqali Django ilovasini ishga tushirish
-CMD ["gunicorn", "myproject.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
