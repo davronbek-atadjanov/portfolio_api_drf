@@ -19,7 +19,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-      - static_volume:/app/staticfiles
+      - static_volume:/app/static
       - media_volume:/app/media
     depends_on:
       - db
@@ -38,7 +38,7 @@ services:
       - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - static_volume:/app/staticfiles
+      - static_volume:/app/static
       - media_volume:/app/media
     depends_on:
       - web
