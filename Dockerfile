@@ -15,4 +15,9 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# Run entrypoint script
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
