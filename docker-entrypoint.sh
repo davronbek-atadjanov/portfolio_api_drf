@@ -1,10 +1,13 @@
 #!/bin/bash
 
-# Migratsiyalarni bajarish
+# Migrate
+echo "Applying database migrations..."
 python manage.py migrate
 
-# Statik fayllarni to'plash
-python manage.py collectstatic
+# Collect static files
+echo "Collecting static files..."
+python manage.py collectstatic --noinput
 
-# Django serverini ishga tushurish
-exec "$@"
+# Start server
+echo "Starting server..."
+gunicorn core.wsgi:application --bind 0.0.0.0:8000
