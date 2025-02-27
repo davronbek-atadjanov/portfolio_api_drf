@@ -33,4 +33,30 @@ class SocialLinkSerializer(serializers.ModelSerializer):
         model = SocialLink
         fields = '__all__'
 
-# Boshqa modellar uchun ham shunga o'xshash serializer lar... 
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = '__all__'
+
+class SkillCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SkillCategory
+        fields = '__all__'
+
+class TechnicalSkillSerializer(serializers.ModelSerializer):
+    category_name = serializers.CharField(source='category.name', read_only=True)
+    
+    class Meta:
+        model = TechnicalSkill
+        fields = ('id', 'name', 'category', 'category_name', 'icon', 'proficiency')
+
+class HobbySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hobby
+        fields = '__all__'
+
+class LanguageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Language
+        fields = '__all__'
+

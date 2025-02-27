@@ -34,3 +34,30 @@ class ProjectAdmin(admin.ModelAdmin):
 class SocialLinkAdmin(admin.ModelAdmin):
     list_display = ('platform', 'username', 'url')
     search_fields = ('platform', 'username')
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('email', 'phone', 'address', 'birth_date')
+    search_fields = ('email', 'phone', 'address')
+
+@admin.register(SkillCategory)
+class SkillCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+
+@admin.register(TechnicalSkill)
+class TechnicalSkillAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category', 'proficiency')
+    list_filter = ('category',)
+    search_fields = ('name', 'category__name')
+
+@admin.register(Hobby)
+class HobbyAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+
+@admin.register(Language)
+class LanguageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'level')
+    list_filter = ('level',)
+    search_fields = ('name',)

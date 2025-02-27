@@ -47,3 +47,66 @@ class SocialLink(models.Model):
     platform = models.CharField(max_length=50)
     username = models.CharField(max_length=100)
     url = models.URLField() 
+
+class Contact(models.Model):
+    address = models.CharField(max_length=255)  # Andijan, Uzbekistan
+    email = models.EmailField()  # alihadid@gmail.com
+    phone = models.CharField(max_length=20)  # 88 972 10 03
+    birth_date = models.DateField()  # 2nd August 1999
+    
+    class Meta:
+        verbose_name = "Contact"
+        verbose_name_plural = "Contacts"
+    
+    def save(self, *args, **kwargs):
+        if Contact.objects.exists() and not self.pk:
+            raise ValidationError('Faqat bitta Contact yaratish mumkin')
+        return super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.email 
+
+class SkillCategory(models.Model):
+    name = models.CharField(max_length=100)  # Modeling, Programming, Design etc.
+    icon = models.ImageField(upload_to='categories/', null=True, blank=True)
+    
+    class Meta:
+        verbose_name = "Skill Category"
+        verbose_name_plural = "Skill Categories"
+    
+    def __str__(self):
+        return self.name
+
+class TechnicalSkill(models.Model):
+    name = models.CharField(max_length=100)  # Revit, Python, Photoshop etc.
+    category = models.ForeignKey(SkillCategory, on_delete=models.CASCADE, related_name='skills')
+    icon = models.ImageField(upload_to='skills/')
+    proficiency = models.IntegerField(default=0, help_text="Skill darajasi (0-100)")
+    
+    def __str__(self):
+        return f"{self.name} ({self.category.name})"
+
+class Hobby(models.Model):
+    name = models.CharField(max_length=100)  # masalan: "Listening to music"
+    icon = models.ImageField(upload_to='hobbies/')
+    
+    class Meta:
+        verbose_name_plural = "Hobbies"
+    
+    def __str__(self):
+        return self.name
+
+class Language(models.Model):
+    LEVEL_CHOICES = (
+        ('native', 'Native'),
+        ('basic', 'Basic'),
+        ('intermediate', 'Intermediate'),
+        ('advanced', 'Advanced'),
+        ('fluent', 'Fluent'),
+    )
+    
+    name = models.CharField(max_length=50)  # masalan: "Uzbek"
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
+    
+    def __str__(self):
+        return f"{self.name} ({self.level})" 
