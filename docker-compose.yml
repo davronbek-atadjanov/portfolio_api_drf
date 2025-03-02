@@ -27,6 +27,8 @@ services:
       - ".env"
     networks:
       - app_network
+    command: [ "sh", "-c", "python manage.py collectstatic --noinput && gunicorn core.wsgi:application --bind 0.0.0.0:8000" ]
+
 
   nginx:
     build:
