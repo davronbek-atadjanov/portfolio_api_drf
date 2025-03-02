@@ -19,7 +19,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-      - static_volume:/static
+      - static_volume:/staticfiles
       - media_volume:/media
     depends_on:
       - db
@@ -27,8 +27,6 @@ services:
       - ".env"
     networks:
       - app_network
-    command: [ "sh", "-c", "python manage.py collectstatic --noinput && gunicorn core.wsgi:application --bind 0.0.0.0:8000" ]
-
 
   nginx:
     build:
@@ -40,7 +38,7 @@ services:
       - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - static_volume:/static
+      - static_volume:/staticfiles
       - media_volume:/media
     depends_on:
       - web
